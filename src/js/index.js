@@ -1,5 +1,4 @@
 import { Grid } from './grid';
-//import { Cursor } from './cursor';
 const cursor = require('./cursor');
 
 var ghpages = require('gh-pages');

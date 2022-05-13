@@ -1,0 +1,40 @@
+{
+    "name": "gallery",
+    "version": "1.0.0",
+    "browserslist": "> 0.5%, last 2 versions, not dead",
+    "description": "",
+    "scripts": {
+        "start": "parcel src/index.html --open",
+        "clean": "rm -rf dist/*",
+        "build:parcel": "parcel build src/index.html --no-content-hash --no-source-maps --public-url ./",
+        "build": "npm run clean && npm run build:parcel",
+        "deploy": "gh-pages -d dist"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/codrops/[NAME].git"
+    },
+    "keywords": [],
+    "author": "solmazfs",
+    "license": "MIT",
+    "homepage": "https://solmazfs.github.io/gallery",
+    "bugs": {
+        "url": "https://github.com/solmazfs/[NAME]/issues"
+    },
+    "devDependencies": {
+        "assert": "^2.0.0",
+        "buffer": "^6.0.3",
+        "constants-browserify": "^1.0.0",
+        "events": "^3.3.0",
+        "gh-pages": "^4.0.0",
+        "os-browserify": "^0.3.0",
+        "parcel": "^2.5.0",
+        "path-browserify": "^1.0.1",
+        "process": "^0.11.10",
+        "stream-browserify": "^3.0.0",
+        "util": "^0.12.4"
+    },
+    "dependencies": {
+        "gsap": "^3.10.4"
+    }
+}

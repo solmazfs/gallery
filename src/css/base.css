@@ -159,7 +159,7 @@ body {
     overflow: hidden;
 }
 .column {
-    --column-offset: 12vh;
+    --column-offset: 18vh;
     display: flex;
     flex-direction: column;
     padding: var(--column-offset) 0;

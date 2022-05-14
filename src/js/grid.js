@@ -4,10 +4,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 let winsize = {width: window.innerWidth, height: window.innerHeight};
-let resized = false;
 window.addEventListener('resize', () => {
     winsize = {width: window.innerWidth, height: window.innerHeight};
-    resized = true;
 });
 
 let getStyle = function (elem) {
@@ -36,7 +34,7 @@ export class Grid {
         // var
         tweenEnd: null,
     }
-    constructor(DOM_el){
+    constructor(DOM_el) {
         this.DOM.el = DOM_el;
         this.DOM.heading = this.DOM.el.querySelector(".heading");
         this.DOM.columns = this.DOM.el.querySelector(".columns");
@@ -56,10 +54,6 @@ export class Grid {
         this.initColumns();
         this.initHeading();
         //this.initViewport();
-        window.addEventListener('resize', () => {
-            this.initViewport();
-        });
-
     }
     initColumns() {
         ScrollTrigger.matchMedia({

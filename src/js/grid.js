@@ -4,8 +4,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 let winsize = {width: window.innerWidth, height: window.innerHeight};
+let resized = false;
 window.addEventListener('resize', () => {
     winsize = {width: window.innerWidth, height: window.innerHeight};
+    resized = true;
 });
 
 let getStyle = function (elem) {
@@ -31,6 +33,8 @@ export class Grid {
         bottom: null,
         // cursor
         cursor: null,
+        // var
+        tweenEnd: null,
     }
     constructor(DOM_el){
         this.DOM.el = DOM_el;
@@ -48,35 +52,43 @@ export class Grid {
         // cursor
         this.DOM.cursor = document.querySelector(".Cursor");
 
+        ScrollTrigger.saveStyles([this.DOM.columns,this.DOM.left,this.DOM.right,this.DOM.center]);
         this.initColumns();
         this.initHeading();
-        this.initViewport();
+        //this.initViewport();
+        window.addEventListener('resize', () => {
+            this.initViewport();
+        });
+
     }
     initColumns() {
-        this.timeLine = gsap.timeline({
-            scrollTrigger: {
-                pin: this.DOM.columns,
-                trigger: this.DOM.columns,
-                start: "top top",
-                end: window.innerHeight * 1.3,
-                scrub: 1,
-                pinSpacing: false,
-                //invalidateOnRefresh: true, // resize
+        ScrollTrigger.matchMedia({
+            "(min-width: 800px)":() => {
+                this.timeLine = gsap.timeline({
+                    scrollTrigger: {
+                        pin: this.DOM.columns,
+                        trigger: this.DOM.columns,
+                        start: "top top",
+                        end: window.innerHeight * 1.3,
+                        scrub: 1,
+                        pinSpacing: false,
+                    }
+                });
+                this.timeLine.from(this.DOM.left, {
+                    duration:1,
+                    rotationX:-0.3,
+                    y: () => -1 * (this.DOM.right.offsetHeight - window.innerHeight),
+                },0).to(this.DOM.center, {
+                    duration:1,
+                    rotationX: 0.3,
+                    y: () => -1 * (this.DOM.center.offsetHeight - window.innerHeight)
+                },0).from(this.DOM.right, {
+                    duration:1,
+                    rotationX:-0.3,
+                    y: () => -1 * (this.DOM.right.offsetHeight - window.innerHeight),
+                },0);
             }
         });
-        this.timeLine.from(this.DOM.left, {
-            duration:1,
-            rotationX:-0.3,
-            y: () => -1 * (this.DOM.right.offsetHeight - window.innerHeight),
-        },0).to(this.DOM.center, {
-            duration:1,
-            rotationX: 0.3,
-            y: () => -1 * (this.DOM.center.offsetHeight - window.innerHeight)
-        },0).from(this.DOM.right, {
-            duration:1,
-            rotationX:-0.3,
-            y: () => -1 * (this.DOM.right.offsetHeight - window.innerHeight),
-        },0);
     }
     initHeading() {
         this.enableFilter = () => {
@@ -130,22 +142,6 @@ export class Grid {
         });
     }
     initViewport() {
-        if(winsize.width < 600 ) {
-            this.timeLine.scrollTrigger.kill(); // tood: scrolltrigger for mobile maybe ...
-            gsap.set([this.DOM.left,this.DOM.right,this.DOM.center,this.DOM.columns], { clearProps: true });
-        }
-        window.addEventListener('resize', () => {
-            // tood: need to fix
-            if (winsize.width < 600) {
-                this.timeLine.scrollTrigger.refresh();
-                this.timeLine.scrollTrigger.disable();
-                gsap.set([this.DOM.left,this.DOM.right,this.DOM.center,this.DOM.columns], { clearProps: true });
-            }
-            if (winsize.width > 600) {
-                //gsap.set([this.DOM.left,this.DOM.right,this.DOM.center,this.DOM.columns], { clearProps: true });
-                this.timeLine.scrollTrigger.enable();
-            }
-            //tl.scrollTrigger.refresh();
-        });
+        //tl.scrollTrigger.refresh();
     }
 }
